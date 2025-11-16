@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pipeline: Detección y Clasificación (Corregido)</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        background-color: #f0f2f5;
+      }
+      h1 {
+        color: #333;
+      }
+      #status {
+        font-size: 1.2em;
+        color: #555;
+        margin: 20px 0;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        min-height: 2em;
+        text-align: center;
+      }
+      #image-container {
+        position: relative;
+        margin-top: 20px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        overflow: hidden;
+        min-height: 100px;
+        background: #fff;
+      }
+      img {
+        display: none;
+      }
+      canvas {
+        display: block;
+        max-width: 80vw;
+        max-height: 70vh;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Pipeline: Detectar, Recortar y Clasificar (Corregido)</h1>
+    <p id="status">Cargando modelos (Detector y Clasificador)...</p>
+
+    <input type="file" id="file-input" accept="image/*" />
+
+    <div id="image-container">
+      <img id="image-display" />
+      <canvas id="canvas-overlay"></canvas>
+    </div>
+
+    <script type="module">
+      import {
+        ObjectDetector,
+        ImageClassifier,
+        FilesetResolver,
+      } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.12";
+
+      const fileInput = document.getElementById("file-input");
+      const imageDisplay = document.getElementById("image-display");
+      const canvas = document.getElementById("canvas-overlay");
+      const ctx = canvas.getContext("2d");
+      const statusText = document.getElementById("status");
+
+      let objectDetector;
+      let imageClassifier;
+
+      async function initializeModels() {
+        const vision = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.12/wasm"
+        );
+
+        await Promise.all([
+          ObjectDetector.createFromOptions(vision, {
+            baseOptions: {
+              modelAssetPath: `https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/float16/1/efficientdet_lite0.tflite`,
+              delegate: "GPU",
+            },
+            scoreThreshold: 0.5,
+            runningMode: "IMAGE",
+          }),
+          ImageClassifier.createFromOptions(vision, {
+            baseOptions: {
+              modelAssetPath:
+                "https://github.com/maxi9113/BigDataCNN20251695010/raw/main/model_final.tflite",
+              delegate: "GPU",
+            },
+            scoreThreshold: 0.5,
+            runningMode: "IMAGE",
+          }),
+        ])
+          .then(([detector, classifier]) => {
+            objectDetector = detector;
+            imageClassifier = classifier;
+            statusText.textContent =
+              "¡Modelos listos! Por favor, selecciona una imagen.";
+            fileInput.disabled = false;
+          })
+          .catch((error) => {
+            console.error("Error al cargar los modelos:", error);
+            statusText.textContent =
+              "Error al cargar los modelos. Revisa la consola.";
+          });
+      }
+
+      async function handleImageUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        statusText.textContent = "Procesando imagen...";
+
+        const url = URL.createObjectURL(file);
+        imageDisplay.src = url;
+
+        imageDisplay.onload = async () => {
+          canvas.width = imageDisplay.naturalWidth;
+          canvas.height = imageDisplay.naturalHeight;
+          await runPipeline(imageDisplay);
+        };
+      }
+
+      async function runPipeline(imageElement) {
+        statusText.textContent = "Paso 1: Detectando objetos...";
+        const detections = objectDetector.detect(imageElement);
+
+        ctx.drawImage(imageElement, 0, 0);
+
+        if (detections.detections.length === 0) {
+          statusText.textContent = "No se detectaron objetos.";
+          return;
+        }
+
+        statusText.textContent = `Paso 2: Se encontraron ${detections.detections.length} objetos. Clasificando...`;
+
+        for (const detection of detections.detections) {
+          const { originX, originY, width, height } = detection.boundingBox;
+
+          const cropCanvas = document.createElement("canvas");
+          cropCanvas.width = width;
+          cropCanvas.height = height;
+          const cropCtx = cropCanvas.getContext("2d");
+          cropCtx.drawImage(
+            imageElement,
+            originX,
+            originY,
+            width,
+            height,
+            0,
+            0,
+            width,
+            height
+          );
+          console.log(cropCanvas);
+          const classificationResult = imageClassifier.classify(cropCanvas);
+
+          drawResult(detection, classificationResult);
+        }
+        statusText.textContent = "Proceso completado.";
+      }
+
+      function drawResult(detection, classificationResult) {
+        const { originX, originY, width, height } = detection.boundingBox;
+        const detectedLabel = detection.categories[0].categoryName;
+
+        ctx.strokeStyle = "#008CBA";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(originX, originY, width, height);
+
+        let classificationLabel = "No clasificado";
+        if (
+          classificationResult.classifications.length > 0 &&
+          classificationResult.classifications[0].categories.length > 0
+        ) {
+          const topCategory =
+            classificationResult.classifications[0].categories[0];
+          classificationLabel = `${topCategory.categoryName} (${Math.round(
+            topCategory.score * 100
+          )}%)`;
+        }
+
+        const fullLabel = `Detectado: ${detectedLabel} -> Clasificado como: ${classificationLabel}`;
+
+        ctx.fillStyle = "#008CBA";
+        ctx.font = "18px Arial";
+        const textWidth = ctx.measureText(fullLabel).width;
+        ctx.fillRect(
+          originX,
+          originY > 25 ? originY - 25 : originY,
+          textWidth + 10,
+          25
+        );
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillText(
+          fullLabel,
+          originX + 5,
+          originY > 25 ? originY - 5 : originY + 18
+        );
+      }
+
+      initializeModels();
+      // Esperar a que el DOM esté listo
+      document.addEventListener("DOMContentLoaded", () => {
+        const fileInput = document.getElementById("file-input");
+        fileInput.addEventListener("change", handleImageUpload);
+      });
+    </script>
+  </body>
+</html>
