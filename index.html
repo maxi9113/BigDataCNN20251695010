@@ -90,7 +90,7 @@
           ImageClassifier.createFromOptions(vision, {
             baseOptions: {
               modelAssetPath:
-                "https://maxi9113.github.io/BigDataCNN20251695010/model_final.tflite",
+                "https://storage.googleapis.com/mediapipe-models/image_classifier/efficientnet_lite0/float32/latest/efficientnet_lite0.tflite",
               delegate: "GPU",
             },
             scoreThreshold: 0.5,
@@ -189,8 +189,8 @@
 
         const fullLabel = `Detectado: ${detectedLabel} -> Clasificado como: ${classificationLabel}`;
 
-        ctx.fillStyle = "#008CBA";
-        ctx.font = "18px Arial";
+        ctx.fillStyle = "#FF0000";
+        ctx.font = "40px Arial";
         const textWidth = ctx.measureText(fullLabel).width;
         ctx.fillRect(
           originX,
@@ -199,7 +199,7 @@
           25
         );
 
-        ctx.fillStyle = "#FFFFFF";
+        ctx.fillStyle = "#FFFF00";
         ctx.fillText(
           fullLabel,
           originX + 5,
