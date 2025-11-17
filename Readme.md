@@ -1,4 +1,4 @@
-# Arhivo de pesos 
+# Archivo de pesos 
 https://udistritaleduco-my.sharepoint.com/:u:/g/personal/mvaletam_udistrital_edu_co/EVKaxgAG63JLqiK-EHpxA2ABJaJi8ZK88xxEjI3Vo4W8JQ?e=uBqRIU
 # Proyecto: Detección y Clasificación de Imágenes en el Navegador
 
