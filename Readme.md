@@ -1,3 +1,11 @@
+Debido a estas dificultades, se tomó la decisión de utilizar los modelos pre-entrenados y mantenidos por el equipo de MediaPipe para asegurar la funcionalidad y estabilidad del proyecto.
+
+### Proceso de Entrenamiento (Modelo Personalizado)
+
+A pesar de no poder integrarlo, se realizó el proceso de entrenamiento de un modelo personalizado con datos propios. El cuaderno de trabajo que documenta este proceso se puede encontrar en Google Colab:
+
+-   **Cuaderno de Entrenamiento:** [Ver en Google Colab](https://colab.research.google.com/drive/1MFl2d2vjGq1cmlr-Putl_ZF_YGGjf9H9?usp=sharing)
+
 # Archivo de pesos 
 https://udistritaleduco-my.sharepoint.com/:u:/g/personal/mvaletam_udistrital_edu_co/EVKaxgAG63JLqiK-EHpxA2ABJaJi8ZK88xxEjI3Vo4W8JQ?e=uBqRIU
 # Proyecto: Detección y Clasificación de Imágenes en el Navegador
@@ -47,13 +55,6 @@ Durante el desarrollo de este proyecto, se exploró la posibilidad de entrenar y
 -   **Falta de Soporte y Documentación:** La documentación y los ejemplos para el proceso de conversión de modelos Keras a un formato TFLite compatible con MediaPipe no están actualizados, lo que lleva a un proceso de prueba y error muy complejo.
 -   **Evolución del Ecosistema:** Google está en proceso de transición de TensorFlow Lite a un nuevo runtime llamado **LiteRT**, optimizado para la inferencia en dispositivos de borde (edge). Esto significa que el soporte y las herramientas para el flujo de trabajo tradicional de TFLite están siendo progresivamente depreciados.
 
-Debido a estas dificultades, se tomó la decisión de utilizar los modelos pre-entrenados y mantenidos por el equipo de MediaPipe para asegurar la funcionalidad y estabilidad del proyecto.
-
-### Proceso de Entrenamiento (Modelo Personalizado)
-
-A pesar de no poder integrarlo, se realizó el proceso de entrenamiento de un modelo personalizado con datos propios. El cuaderno de trabajo que documenta este proceso se puede encontrar en Google Colab:
-
--   **Cuaderno de Entrenamiento:** [Ver en Google Colab](https://colab.research.google.com/drive/1MFl2d2vjGq1cmlr-Putl_ZF_YGGjf9H9?usp=sharing)
 
 ### 📚 Para saber más sobre LiteRT
 
