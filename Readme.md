@@ -1,5 +1,5 @@
 # Circunstancia Tecnicas
-Debido a estas dificultades, se tomó la decisión de utilizar los modelos pre-entrenados y mantenidos por el equipo de MediaPipe para asegurar la funcionalidad y estabilidad del proyecto.
+Debido a estas dificultades tecnicas que se mencionaran a continuación, se tomó la decisión de utilizar los modelos pre-entrenados y mantenidos por el equipo de MediaPipe para asegurar la funcionalidad y estabilidad del proyecto, sin embargo se adjunta proceso de entrenamiento en cuaderno COLAB para evidenciar el trabajo realizado
 
 ### Proceso de Entrenamiento (Modelo Personalizado)
 
