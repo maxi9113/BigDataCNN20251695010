@@ -1,6 +1,8 @@
-# Proyecto: Pipeline de Detección y Clasificación de Imágenes en el Navegador
+# Arhivo de pesos 
+https://udistritaleduco-my.sharepoint.com/:u:/g/personal/mvaletam_udistrital_edu_co/EVKaxgAG63JLqiK-EHpxA2ABJaJi8ZK88xxEjI3Vo4W8JQ?e=uBqRIU
+# Proyecto: Detección y Clasificación de Imágenes en el Navegador
 
-Este proyecto es una aplicación web que implementa un pipeline de visión por computadora de dos etapas directamente en el navegador del usuario. Utiliza la librería MediaPipe Tasks Vision de Google para realizar las siguientes acciones:
+Este proyecto es una aplicación web que implementa un modelo de visión por computadora de dos etapas directamente en el navegador del usuario. Utiliza la librería MediaPipe Tasks Vision de Google para realizar las siguientes acciones:
 
 1.  **Detección de Objetos:** Analiza una imagen proporcionada por el usuario para encontrar y localizar objetos genéricos.
 2.  **Clasificación de Objetos:** Recorta cada objeto detectado y lo envía a un segundo modelo, más específico, para obtener una clasificación detallada.
