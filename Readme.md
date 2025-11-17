@@ -1,3 +1,4 @@
+# Circunstancia Tecnicas
 Debido a estas dificultades, se tomó la decisión de utilizar los modelos pre-entrenados y mantenidos por el equipo de MediaPipe para asegurar la funcionalidad y estabilidad del proyecto.
 
 ### Proceso de Entrenamiento (Modelo Personalizado)
