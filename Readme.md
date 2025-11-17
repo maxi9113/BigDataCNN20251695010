@@ -13,10 +13,9 @@ Todo el procesamiento se realiza en el lado del cliente, lo que garantiza la pri
 
 El proyecto está contenido en un único archivo HTML. No requiere instalación ni un servidor web.
 
-1.  **Guarda el código:** Asegúrate de tener el archivo `index.html` (el código que proporcionaste) en tu computadora.
-2.  **Ábrelo en un navegador:** Haz doble clic en el archivo `index.html` para abrirlo en un navegador web moderno (como Chrome, Firefox, Edge, etc.).
-3.  **Selecciona una imagen:** Haz clic en el botón "Seleccionar archivo" y elige una imagen de tu computadora que contenga objetos.
-4.  **Observa el resultado:** La aplicación dibujará un cuadro sobre cada objeto detectado con una etiqueta que muestra tanto la detección inicial como la clasificación final.
+1.  **Ábrelo en un navegador:** Haz doble clic en el archivo `index.html` para abrirlo en un navegador web moderno (como Chrome, Firefox, Edge, etc.).
+2.  **Selecciona una imagen:** Haz clic en el botón "Seleccionar archivo" y elige una imagen de tu computadora que contenga objetos.
+3.  **Observa el resultado:** La aplicación dibujará un cuadro sobre cada objeto detectado con una etiqueta que muestra tanto la detección inicial como la clasificación final.
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -35,7 +34,7 @@ Este pipeline utiliza dos modelos pre-entrenados y alojados por MediaPipe:
 
 El núcleo de esta aplicación es su flujo de trabajo en dos etapas:
 
-1.  **Detección Global:** El modelo `ObjectDetector` recibe la imagen completa y devuelve las coordenadas (`bounding box`) de cada objeto que encuentra (ej: "dog", "chair").
+1.  **Detección Global:** El modelo `ObjectDetector` recibe la imagen completa y devuelve las coordenadas (`bounding box`) de cada objeto que encuentra (ej: "tv", "chair").
 2.  **Recorte Dinámico:** Para cada `bounding box` encontrada, se crea un `<canvas>` temporal en memoria. Se utiliza para "recortar" esa sección específica de la imagen original.
 3.  **Clasificación Específica:** Cada imagen recortada (en su canvas temporal) se envía al `ImageClassifier`. Este modelo, al estar enfocado en una sola cosa, puede dar un resultado mucho más preciso (ej: "Golden Retriever", "Silla de oficina").
 4.  **Visualización:** Finalmente, los resultados de ambos modelos se combinan y se dibujan sobre la imagen original para que el usuario pueda verlos.
